@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,6 +12,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        $approves = ['meleancaionut1@gmail.com', 'meleanca.adrian.ionut@gmail.com', 'adrian.meleanca@mediadigi.ro', 'daniel@mediadigi.ro', 'daniel.stanica@mediadigi.ro', 'iulia.rosca@mediadigi.ro'];
+        foreach ($approves as $key => $approve)
+        {
+            DB::table('approves')->insert($approve);
+        }
     }
 }
