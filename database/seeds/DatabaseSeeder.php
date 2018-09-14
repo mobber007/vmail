@@ -15,7 +15,9 @@ class DatabaseSeeder extends Seeder
         $approves = ['meleancaionut1@gmail.com', 'meleanca.adrian.ionut@gmail.com', 'adrian.meleanca@mediadigi.ro', 'daniel@mediadigi.ro', 'daniel.stanica@mediadigi.ro', 'iulia.rosca@mediadigi.ro'];
         foreach ($approves as $key => $approve)
         {
-            DB::table('approves')->insert($approve);
+            DB::table('approves')->insert([
+                'email' => $approve
+            ]);
         }
     }
 }
