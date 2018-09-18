@@ -44,11 +44,9 @@ class VMailController extends Controller
 
   }
 
-  public function verify($api_key,$email)
-  {
-    if($api_key == '123456789')
+  public function verify($email){
+    if(filter_var($email, FILTER_VALIDATE_EMAIL))
     {
-      if(filter_var($email, FILTER_VALIDATE_EMAIL)){
       if($this->chosen_server)
       {
         try {
@@ -70,15 +68,7 @@ class VMailController extends Controller
         'error' => 'Please insert an email address',
         'servers_online' => count($this->vmail_servers)
       ]);
-    }}
-    else {
-      return response()->json([
-        'data' => null,
-        'error' => 'Invalid api key',
-        'servers_online' => count($this->vmail_servers)
-      ]);
     }
-
   }
   public function show_servers()
   {
@@ -98,9 +88,9 @@ class VMailController extends Controller
     foreach ($this->vmail_servers as $key => $server) {
       array_push($name_servers,array('no' => $key, 'name' => $names[$key], 'status' => $server['status']));
     }
-        return response()->json($name_servers);
+    return response()->json($name_servers);
 
-    }
+  }
 
 
 }

@@ -2,4 +2,4 @@
 
 use Illuminate\Http\Request;
 Route::get('/', 'VMailController@servers');
-Route::get('/{api_key}/verify/{email}', 'VMailController@verify')->where('email', '(.*)');
+Route::get('/verify/{email}', 'VMailController@verify')->where('email', '(.*)')->middleware('checkApiKey');
