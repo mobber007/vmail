@@ -44,32 +44,41 @@ class VMailController extends Controller
 
   }
 
-  public function verify($email)
+  public function verify($api_key,$email)
   {
-  if(filter_var($email, FILTER_VALIDATE_EMAIL))
-  {
-    if($this->chosen_server)
+    if($api_key == '123456789')
     {
-      try {
-        $res = json_decode($this->guzzle_client->request('GET', $this->chosen_server['address'].'json/'.$email)->getBody());
-      } catch (\Exception $e) {
-        $res = $e->getMessage();
+      if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+      if($this->chosen_server)
+      {
+        try {
+          $res = json_decode($this->guzzle_client->request('GET', $this->chosen_server['address'].'json/'.$email)->getBody());
+        } catch (\Exception $e) {
+          $res = $e->getMessage();
+        }
       }
+      if(isset($res->errorDetail))
+      $res->errorDetail = '';
+      return response()->json([
+        'data' => $res,
+        'servers_online' => count($this->vmail_servers)
+      ]);
     }
-    if(isset($res->errorDetail))
-    $res->errorDetail = '';
-    return response()->json([
-      'data' => $res,
-      'servers_online' => count($this->vmail_servers)
-    ]);
-  }
-  else {
-    return response()->json([
-      'data' => null,
-      'error' => 'Please insert an email address',
-      'servers_online' => count($this->vmail_servers)
-    ]);
-  }
+    else {
+      return response()->json([
+        'data' => null,
+        'error' => 'Please insert an email address',
+        'servers_online' => count($this->vmail_servers)
+      ]);
+    }}
+    else {
+      return response()->json([
+        'data' => null,
+        'error' => 'Invalid api key',
+        'servers_online' => count($this->vmail_servers)
+      ]);
+    }
+
   }
   public function show_servers()
   {
